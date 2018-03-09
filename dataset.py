@@ -20,7 +20,7 @@ def load_data(data_root, net_shape,resize=None, test_data=None):
                 a[i][0] = 1
             data.append((img_data,a))
     return data
-#从csv读取文件
+#从csv读取
 class Load_data_csv(object):
     def __init__(self, data_name,net_shape,test_data=None):
         self.net_shape = net_shape
