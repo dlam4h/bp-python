@@ -93,11 +93,13 @@ class Network(object):
         new_biases = self.biases
         self.loss.append(((self.active_values[-1]-label) ** 2).mean() / 2)
         delta = (self.active_values[-1]-label)*self.activation_prime(self.values[-1])
-        new_biases[-1]=delta
+        new_biases[-1] = np.reshape((np.sum(delta, axis=0) / len(delta)), (1, self.net[-1]))
+        # new_biases[-1]=delta
         new_weights[-1]=np.dot(self.active_values[-2].T,delta)
         for i in range(2,len(self.net)):
             delta = np.dot(delta,self.weights[-i+1].T)*self.activation_prime(self.values[-i])
-            new_biases[-i] = delta
+            new_biases[-i]=np.reshape((np.sum(delta, axis=0) / len(delta)), (1, self.net[i-1]))
+            # new_biases[-i] = delta
             new_weights[-i] = np.dot(self.active_values[-i-1].T,delta)
         for i in range(len(new_weights)-1):
             self.weights[i] = self.weights[i] - self.lr*new_weights[i]/batch_size
